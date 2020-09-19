@@ -17,18 +17,19 @@ import java.util.List;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class BulletinServiceImpl implements BulletinService {
 
-    private final BulletinRepository postRepository;
+    private final BulletinRepository bulletinRepository;
     private final DataParser dataParser;
     private static final int ITEMS_PER_PAGE = 10;
     @Override
     public List<Bulletin> getPageOfBulletins(String page) {
 
+        bulletinRepository.findById(1);
             return dataParser
                     .parseInt(page)
                     .filter(this::isPageNumberValid)
-                    .map(x -> postRepository.findAll(PageRequest.of(x - 1, ITEMS_PER_PAGE)).getContent())
+                    .map(x -> bulletinRepository.findAll(PageRequest.of(x - 1, ITEMS_PER_PAGE)).getContent())
                     .orElseGet(
-                            () -> postRepository.findAll(PageRequest.of(0, ITEMS_PER_PAGE)).getContent());
+                            () -> bulletinRepository.findAll(PageRequest.of(0, ITEMS_PER_PAGE)).getContent());
         }
 
         public boolean isPageNumberValid(int page) {
@@ -37,7 +38,7 @@ public class BulletinServiceImpl implements BulletinService {
         }
 
     public int pagesCount() {
-        long itemsCount = postRepository.count();
+        long itemsCount = bulletinRepository.count();
         long pagesCount = itemsCount / ITEMS_PER_PAGE;
         if (itemsCount % ITEMS_PER_PAGE != 0) {
             pagesCount++;

@@ -1,6 +1,7 @@
 package com.bulletin_board.app.entity;
 
 import lombok.*;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
+@ToString
 @Table(name = "users")
 public class User {
 
@@ -21,11 +23,11 @@ public class User {
   private Integer id;
 
   @Length(min = 2, max = 25)
-  @Column(name = "first_name", unique = true, nullable =  false)
+  @Column(name = "first_name", nullable =  false)
   private String firstName;
 
   @Length(min = 2, max = 25)
-  @Column(name = "last_name", unique = true, nullable =  false)
+  @Column(name = "last_name", nullable =  false)
   private String lastName;
 
   @Column(name = "password", nullable =  false)
@@ -35,6 +37,7 @@ public class User {
   @Column(name = "email", unique = true, nullable = false)
   private String email;
 
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "author")
+  @ToString.Exclude
+  @OneToMany(mappedBy = "author")
   private List<Bulletin> posts;
 }

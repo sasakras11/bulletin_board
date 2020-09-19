@@ -18,6 +18,8 @@ public class LoginController {
   private final UserService userService;
   private final BulletinService bulletinService;
   private final SessionBean sessionBean;
+  private static final String BULLETINS_LIST_NAME = "bulletins";
+  private static final String BULLETINS_HTML_PAGE_NAME = "bulletins";
 
   @GetMapping(value = "/")
   public ModelAndView getLoginPage() {
@@ -27,18 +29,43 @@ public class LoginController {
 
     return modelAndView;
   }
+  @GetMapping(value = "/registerPage")
+  public ModelAndView getRegisterPage() {
 
-  @PostMapping(value = "/bulletins")
-  public ModelAndView loggingIn(
+    ModelAndView modelAndView = new ModelAndView();
+    modelAndView.setViewName("register");
+
+    return modelAndView;
+    }
+
+  @PostMapping(value = "/bulletins", params = {"email","password"})
+  public ModelAndView login(
       @RequestParam("email") String email, @RequestParam("password") String password) {
 
     ModelAndView modelAndView = new ModelAndView();
     User user = userService.login(email, password);
     sessionBean.setUser(user);
-    modelAndView.addObject("bulletins", bulletinService.getPageOfBulletins("1"));
+    modelAndView.addObject(BULLETINS_LIST_NAME, bulletinService.getPageOfBulletins("1"));
 
-    modelAndView.setViewName("bulletins");
+    modelAndView.setViewName(BULLETINS_HTML_PAGE_NAME);
 
     return modelAndView;
   }
-}
+  @PostMapping(value = "/bulletins",params = {"email","password","firstName","lastName"})
+  public ModelAndView register(
+          @RequestParam("email") String email, @RequestParam("password") String password,@RequestParam("firstName") String firstName,
+          @RequestParam("lastName") String lastName) {
+
+    ModelAndView modelAndView = new ModelAndView();
+    User user = userService.register(email, password,firstName,lastName);
+    sessionBean.setUser(user);
+    modelAndView.addObject(BULLETINS_LIST_NAME, bulletinService.getPageOfBulletins("1"));
+
+    modelAndView.setViewName(BULLETINS_HTML_PAGE_NAME);
+
+    return modelAndView;
+  }
+
+  }
+
+

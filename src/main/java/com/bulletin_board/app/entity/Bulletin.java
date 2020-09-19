@@ -1,9 +1,8 @@
 package com.bulletin_board.app.entity;
 
-import com.bulletin_board.app.config.CustomDateDeserializer;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import lombok.*;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -28,15 +27,17 @@ public class Bulletin {
     @Length(min = 8, max = 30)
     private String header;
 
+    @Lob
     @Column(name = "text",nullable = false)
-    @Length(min = 20,max = 100)
+    @Length(min = 20,max = 1000)
     private String text;
 
     @Column(name = "date",nullable = false)
-    @JsonDeserialize(using = CustomDateDeserializer.class)
-    @JsonFormat(pattern = "EEE MMM dd HH:mm:ss zzz yyyy")
+    @Temporal(TemporalType.DATE)
     private Date date;
 
-    @ManyToOne
+
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
     private User author;
 }

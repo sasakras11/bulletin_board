@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class SessionBean implements Serializable {
+public class SessionBean implements Serializable { // TODO read about this
   private User user;
 
 
