@@ -1,6 +1,7 @@
 package com.bulletin_board.app.controller;
 
 import com.bulletin_board.app.entity.User;
+import com.bulletin_board.app.service.BulletinService;
 import com.bulletin_board.app.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -16,6 +18,7 @@ public class AccountController {
 
   private final SessionBean sessionBean;
   private final UserService userService;
+  private final BulletinService bulletinService;
 
   @GetMapping(value = "/account")
   public ModelAndView account() {
@@ -39,4 +42,14 @@ public class AccountController {
     modelAndView.setViewName("account");
     return modelAndView;
   }
+
+  @PostMapping(value = "/addBulletin")
+  public ModelAndView addBulletin(
+      @RequestParam("header") String header, @RequestParam("text") String text) {
+    ModelAndView modelAndView = new ModelAndView();
+    bulletinService.loadBulletin(header, text, sessionBean.getUser());
+    modelAndView.addObject("bulletins", bulletinService.getPageOfBulletins("1"));
+    modelAndView.setViewName("bulletins");
+    return modelAndView;
+}
 }

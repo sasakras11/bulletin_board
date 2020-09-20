@@ -40,4 +40,8 @@ public class Bulletin {
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     private User author;
+
+//    @Lob
+//    @Column(name="image", columnDefinition="mediumblob")
+//    private byte[] image;
 }
