@@ -1,16 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Login</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"
+          id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <style>
+        body {
+            background-color: #f2f2f2;
+        }
+
+        .table {
+            background-color: #ffff;
+            box-shadow: 0px 2px 2px #aaa;
+            margin-top: 50px;
+        }
+    </style>
+
+
 </head>
 <body>
-<form action="/bulletins" method="post">
-    <input type="text" name="email" id="email">
-    <input type="text" name="password" id="password">
-    <input type="text" name="firstName" id="firstName">
-    <input type="text" name="lastName" id="lastName">
-    <input type="submit" >
-</form>
+<a href="?lang=en" th:text="#{label.en}">English</a>|<a href="?lang=ua" th:text="#{label.ua}"></a>
+
+<h2 th:text="${error}">...</h2>
+
+<div id="login">
+    <div class="container" style="margin-top: 160px">
+        <div id="login-row" class="row justify-content-center align-items-center">
+            <div id="login-column" class="col-md-6">
+                <div id="login-box" class="col-md-12">
+                    <form id="login-form" class="form" th:action="@{/bulletins}" method="post">
+                        <h3 class="text-center text-info" th:text="#{label.registration}"></h3>
+                        <div class="form-group">
+                            <label th:text="#{label.email}" class="text-info"></label><br>
+                            <input type="text" name="email" id="email" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label th:text="#{label.password}" class="text-info"></label><br>
+                            <input type="text" name="password" id="password" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label th:text="#{label.firstName}" class="text-info"></label><br>
+                            <input type="text" name="firstName" id="firstName" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label th:text="#{label.lastName}" class="text-info"></label><br>
+                            <input type="text" name="lastName" id="lastName" class="form-control">
+                        </div>
+                        <div class="form-group">
+
+                            <input type="submit"  th:value="#{label.register}" class="btn btn-info btn-md">
+                        </div>
+                        <div id="register-link" class="text-right">
+                            <a th:href="@{/}" th:text="#{label.loginPage}" class="text-info"></a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

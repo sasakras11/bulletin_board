@@ -29,17 +29,20 @@ public class LoginController {
 
     return modelAndView;
   }
-  @GetMapping(value = "/registerPage")
-  public ModelAndView getRegisterPage() {
+
+  @GetMapping(value = "/registration")
+  public ModelAndView getRegistrationPage() {
 
     ModelAndView modelAndView = new ModelAndView();
     modelAndView.setViewName("register");
 
     return modelAndView;
-    }
+  }
 
-  @PostMapping(value = "/bulletins", params = {"email","password"})
-  public ModelAndView login(
+  @PostMapping(
+      value = "/bulletins",
+      params = {"email", "password"})
+  public ModelAndView getBulletinsPage(
       @RequestParam("email") String email, @RequestParam("password") String password) {
 
     ModelAndView modelAndView = new ModelAndView();
@@ -51,13 +54,18 @@ public class LoginController {
 
     return modelAndView;
   }
-  @PostMapping(value = "/bulletins",params = {"email","password","firstName","lastName"})
-  public ModelAndView register(
-          @RequestParam("email") String email, @RequestParam("password") String password,@RequestParam("firstName") String firstName,
-          @RequestParam("lastName") String lastName) {
+
+  @PostMapping(
+      value = "/bulletins",
+      params = {"email", "password", "firstName", "lastName"})
+  public ModelAndView getBulletinsPage(
+      @RequestParam("email") String email,
+      @RequestParam("password") String password,
+      @RequestParam("firstName") String firstName,
+      @RequestParam("lastName") String lastName) {
 
     ModelAndView modelAndView = new ModelAndView();
-    User user = userService.register(email, password,firstName,lastName);
+    User user = userService.register(email, password, firstName, lastName);
     sessionBean.setUser(user);
     modelAndView.addObject(BULLETINS_LIST_NAME, bulletinService.getPageOfBulletins("1"));
 
@@ -65,7 +73,4 @@ public class LoginController {
 
     return modelAndView;
   }
-
-  }
-
-
+}
