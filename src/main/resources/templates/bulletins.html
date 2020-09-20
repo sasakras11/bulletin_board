@@ -1,31 +1,45 @@
-
-
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+
+    <title>Login</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"
           id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="my_styles.css">
+    <link rel="stylesheet" type="text/css" href="start.css">
+
+    <style>
+        body {
+            background-color: #f2f2f2;
+        }
+
+        .table {
+            background-color: #ffff;
+            box-shadow: 0px 2px 2px #aaa;
+            margin-top: 50px;
+        }
+    </style>
+
+    <a href="?lang=en" th:text="#{label.en}">English</a>|<a href="?lang=ua" th:text="#{label.ua}"></a>
+
+
 </head>
 <body>
 
-<div  class="flex" style= "min-height: 120px; margin-left: 15%;margin-right: 15%;margin-top: 5%
-">
+<div class="flex" style="min-height: 120px; margin-left: 15%;margin-right: 15%">
     <div class="row w-100">
-        <nav style="width: 100%">
+        <nav style="width: 100%;margin-left: 4%;margin-right: 4%">
             <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
 
                 <div class="col-6">
-                    <a  class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab"
-                        role="tab" aria-controls="nav-home" aria-selected="true">bulletins</a>
+                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab"
+                       role="tab" aria-controls="nav-home" aria-selected="true">bulletins</a>
                 </div>
                 <div class="col-6"><a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab"
-                                      role="tab" aria-controls="nav-profile" aria-selected="false">account</a>
+                                      th:href="@{/account}" role="tab" aria-controls="nav-profile"
+                                      aria-selected="false">account</a>
                 </div>
-
 
 
             </div>
@@ -34,37 +48,46 @@
 </div>
 
 
-<div class="flex rounded" style="background-color: cornsilk;padding: 15px; min-height: 120px; margin-left: 15%;margin-right: 15%">
+<div
+     style="padding: 15px; min-height: 120px; margin-left: 15%;margin-right: 15%; margin-top: 20px">
 
     <th:block th:each="bulletin : ${bulletins}">
 
 
+        <div class="row w-100 flex rounded" style="margin-left: 0;margin-bottom: 20px; background-color: #2CA5BA;padding: 1%">
+            <div class="col-2">
+                <img src="https://lh3.googleusercontent.com/IeNJWoKYx1waOhfWF6TiuSiWBLfqLb18lmZYXSgsH1fvb8v1IYiZr5aYWe0Gxu-pVZX3"
+                     class="img-thumbnail">
 
-    <div class="row w-100" style="margin-left: 0">
-        <div class="col-2">
-            <img src="https://lh3.googleusercontent.com/IeNJWoKYx1waOhfWF6TiuSiWBLfqLb18lmZYXSgsH1fvb8v1IYiZr5aYWe0Gxu-pVZX3"
-                 class="img-thumbnail">
-
-            </img>
-        </div>
-        <div class="col-10">
-            <div class="row w-100" style=" margin-top: 10px;margin-bottom: 10px">
-                <div class="col-10">
-                    <p style="font-size: 20px;font-weight: bold;" th:text="${bulletin.getHeader()}">...</p>
-                </div>
-                <div class="col-2">
-                    <p th:text="${bulletin.getDate()}">...</p>
-                </div>
+                </img>
             </div>
-            <div class="row w-100">
-                <p th:text="${bulletin.getText()}">...</p>
-            </div>
-            <div class="row w-100 d-flex justify-content-end" style=" margin-top: 10px">
-                <p style="margin-right: 5%" th:text="${bulletin.getAuthor().getFirstName()}">...</p>
+            <div class="col-10">
+                <div class="row w-100" style=" margin-top: 10px;margin-bottom: 10px">
+                    <div class="col-10">
+                        <p style="font-size: 20px;font-weight: bold;" th:text="${bulletin.getHeader()}">...</p>
+                    </div>
+                    <div class="col-2">
+                        <p th:text="${bulletin.getDate()}">...</p>
+                    </div>
+                </div>
+                <div class="row w-100">
+                    <p th:text="${bulletin.getText()}">...</p>
+                </div>
+                <div class="row w-100 d-flex justify-content-end" style=" margin-top: 10px">
+                    <p style="margin-right: 5%" th:text="${bulletin.getAuthor().getFirstName()}">...</p>
+                </div>
             </div>
         </div>
-    </div>
-        </th:block>
+    </th:block>
+    <nav class="d-flex justify-content-center">
+        <ul class="pagination">
+            <th:block th:each="i: ${#numbers.sequence(1,pagesCount)}">
+                <li class="page-link"><a  th:href="@{/page(pageNum=${i})}" th:text="${i}"></a></li>
+            </th:block>
+        </ul>
+    </nav>
 </div>
+
+
 </body>
 </html>

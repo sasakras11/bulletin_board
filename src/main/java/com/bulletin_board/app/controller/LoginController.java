@@ -48,6 +48,8 @@ public class LoginController {
     ModelAndView modelAndView = new ModelAndView();
     User user = userService.login(email, password);
     sessionBean.setUser(user);
+    modelAndView.addObject("pagesCount", bulletinService.pagesCount());
+
     modelAndView.addObject(BULLETINS_LIST_NAME, bulletinService.getPageOfBulletins("1"));
 
     modelAndView.setViewName(BULLETINS_HTML_PAGE_NAME);
@@ -68,7 +70,7 @@ public class LoginController {
     User user = userService.register(email, password, firstName, lastName);
     sessionBean.setUser(user);
     modelAndView.addObject(BULLETINS_LIST_NAME, bulletinService.getPageOfBulletins("1"));
-
+    modelAndView.addObject("pagesCount", bulletinService.pagesCount());
     modelAndView.setViewName(BULLETINS_HTML_PAGE_NAME);
 
     return modelAndView;

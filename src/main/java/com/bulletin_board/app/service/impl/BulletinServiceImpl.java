@@ -44,7 +44,7 @@ public class BulletinServiceImpl implements BulletinService {
   @Override
   public List<Bulletin> getPageOfBulletins(String page) {
 
-    bulletinRepository.findById(1);
+
     return dataParser
         .parseInt(page)
         .filter(this::isPageNumberValid)

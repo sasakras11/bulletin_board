@@ -43,13 +43,6 @@ public class AccountController {
     return modelAndView;
   }
 
-  @PostMapping(value = "/addBulletin")
-  public ModelAndView addBulletin(
-      @RequestParam("header") String header, @RequestParam("text") String text) {
-    ModelAndView modelAndView = new ModelAndView();
-    bulletinService.loadBulletin(header, text, sessionBean.getUser());
-    modelAndView.addObject("bulletins", bulletinService.getPageOfBulletins("1"));
-    modelAndView.setViewName("bulletins");
-    return modelAndView;
-}
+
+
 }
