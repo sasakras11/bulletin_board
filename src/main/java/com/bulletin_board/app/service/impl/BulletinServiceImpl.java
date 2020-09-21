@@ -2,6 +2,7 @@ package com.bulletin_board.app.service.impl;
 
 import com.bulletin_board.app.entity.Bulletin;
 import com.bulletin_board.app.entity.User;
+import com.bulletin_board.app.exception.BulletinsApplicationException;
 import com.bulletin_board.app.repository.BulletinRepository;
 import com.bulletin_board.app.service.BulletinService;
 import com.bulletin_board.app.service.DataParser;
@@ -11,7 +12,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Date;
 import java.util.List;
 
@@ -26,10 +38,20 @@ public class BulletinServiceImpl implements BulletinService {
   private static final int ITEMS_PER_PAGE = 10;
 
   @Override
-  public void loadBulletin( String header, String text, User author) {
+  public void loadBulletin(MultipartFile image, String header, String text, User author) {
 
     validator.validateBulletinHeader(header);
     validator.validateBulletinText(text);
+
+    String path = "images/"+image.getOriginalFilename();
+    try {
+      Path copyLocation = Paths.get("target/classes/static/images" + File.separator + StringUtils.cleanPath(image.getOriginalFilename()));
+      Files.copy(image.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
+    } catch (Exception e) {
+      throw new BulletinsApplicationException(e.getMessage(),"login");
+
+    }
+
 
     Bulletin bulletin =
         Bulletin.builder()
@@ -37,14 +59,15 @@ public class BulletinServiceImpl implements BulletinService {
             .text(text)
             .author(author)
             .date(new Date())
+                .pathToImage(path)
             .build();
+
 
     bulletinRepository.save(bulletin);
   }
 
   @Override
   public List<Bulletin> getPageOfBulletins(String page) {
-
 
     return dataParser
         .parseInt(page)

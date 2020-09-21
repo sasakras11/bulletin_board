@@ -37,11 +37,10 @@ public class Bulletin {
     private Date date;
 
 
+    @Column(name = "image_path", nullable = false)
+    private String pathToImage;
+
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     private User author;
-
-//    @Lob
-//    @Column(name="image", columnDefinition="mediumblob")
-//    private byte[] image;
 }

@@ -12,6 +12,6 @@ public interface BulletinService {
 
     List<Bulletin> getPageOfBulletins(String page);
 
-    void loadBulletin( String header, String text, User author);
+    void loadBulletin( MultipartFile image,String header, String text, User author);
     public int pagesCount();
 }
