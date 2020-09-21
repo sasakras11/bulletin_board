@@ -12,7 +12,7 @@ public class Validator {
 
 
   public void validateName(String name){
-     if(name.length() < 3) throw new BulletinsApplicationException("not valid name",REGISTER_PAGE_NAME); // edit
+     if(name.length() < 3) throw new BulletinsApplicationException("not valid name. Should be more then 2 characters long",REGISTER_PAGE_NAME); // edit
   }
 
 
@@ -24,9 +24,19 @@ public class Validator {
 
   public void validatePassword(String pass) {
     if (!pass.matches(PASSWORD_PATTERN)) {
-      throw new BulletinsApplicationException("not valid password",REGISTER_PAGE_NAME);
+      throw new BulletinsApplicationException("not valid password(should be more then 8 characters long and only latin symbols and numbers)",REGISTER_PAGE_NAME);
     }
   }
 
+  public void validateBulletinHeader(String header){
+    if(header.length()<8 || header.length()> 30) {
+      throw new BulletinsApplicationException("header length should be from 8 to 30 characters long","add_bulletin");
+    }
+  }
 
+  public void validateBulletinText(String text){
+    if(text.length()<20 || text.length()> 300) {
+      throw new BulletinsApplicationException("text length should be from 20 to 300 characters long","add_bulletin");
+    }
+  }
 }

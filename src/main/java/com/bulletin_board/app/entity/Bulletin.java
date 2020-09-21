@@ -29,7 +29,7 @@ public class Bulletin {
 
     @Lob
     @Column(name = "text",nullable = false)
-    @Length(min = 20,max = 1000)
+    @Length(min = 20,max = 300)
     private String text;
 
     @Column(name = "date",nullable = false)

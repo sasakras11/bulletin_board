@@ -5,9 +5,8 @@ import com.bulletin_board.app.entity.User;
 import com.bulletin_board.app.repository.BulletinRepository;
 import com.bulletin_board.app.service.BulletinService;
 import com.bulletin_board.app.service.DataParser;
-import com.bulletin_board.app.service.util.FileLoader;
+import com.bulletin_board.app.service.Validator;
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -23,12 +22,14 @@ public class BulletinServiceImpl implements BulletinService {
 
   private final BulletinRepository bulletinRepository;
   private final DataParser dataParser;
-  private final FileLoader fileLoader;
+  private final Validator validator;
   private static final int ITEMS_PER_PAGE = 10;
 
   @Override
   public void loadBulletin( String header, String text, User author) {
 
+    validator.validateBulletinHeader(header);
+    validator.validateBulletinText(text);
 
     Bulletin bulletin =
         Bulletin.builder()

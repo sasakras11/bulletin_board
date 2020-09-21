@@ -1,6 +1,5 @@
 package com.bulletin_board.app.service.impl;
 
-import com.bulletin_board.app.controller.SessionBean;
 import com.bulletin_board.app.exception.BulletinsApplicationException;
 import com.bulletin_board.app.service.DataParser;
 import com.bulletin_board.app.entity.User;
@@ -46,9 +45,9 @@ public class UserServiceImpl implements UserService {
   public User register(String email, String password, String firstName, String lastName) {
 
     validator.validateEmail(email);
+    validator.validatePassword(password);
     validator.validateName(firstName);
     validator.validateName(lastName);
-    validator.validatePassword(password);
 
     if (!userRepository.findByEmail(email).isPresent()) {
       User user =
