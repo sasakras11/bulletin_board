@@ -1,6 +1,5 @@
 package com.bulletin_board.app.controller;
 
-
 import com.bulletin_board.app.entity.User;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -10,9 +9,8 @@ import java.io.Serializable;
 
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class SessionBean implements Serializable { // TODO read about this
+public class SessionBean implements Serializable {
   private User user;
-
 
   public User getUser() {
     return user;

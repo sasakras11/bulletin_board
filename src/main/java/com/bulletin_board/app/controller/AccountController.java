@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -35,6 +34,7 @@ public class AccountController {
       @RequestParam("email") String email,
       @RequestParam("password") String password,
       @RequestParam("firstName") String firstName) {
+
     ModelAndView modelAndView = new ModelAndView();
     User user = userService.editUser(sessionBean.getUser().getId(), email, password, firstName);
     sessionBean.setUser(user);
@@ -42,7 +42,4 @@ public class AccountController {
     modelAndView.setViewName("account");
     return modelAndView;
   }
-
-
-
 }

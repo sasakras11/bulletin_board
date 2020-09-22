@@ -1,6 +1,5 @@
 package com.bulletin_board.app.service;
 
-
 import com.bulletin_board.app.entity.Bulletin;
 import com.bulletin_board.app.entity.User;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,8 +9,9 @@ import java.util.List;
 
 public interface BulletinService {
 
-    List<Bulletin> getPageOfBulletins(String page);
+  List<Bulletin> getPageOfBulletins(String page);
 
-    void loadBulletin( MultipartFile image,String header, String text, User author);
-    public int pagesCount();
+  void loadBulletin(MultipartFile image, String header, String text, User author);
+
+  public int pagesCount();
 }

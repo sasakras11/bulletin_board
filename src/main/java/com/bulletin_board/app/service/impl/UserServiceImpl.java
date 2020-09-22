@@ -22,7 +22,6 @@ public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final Validator validator;
-  private final DataParser dataParser;
 
   @Override
   public User login(String email, String password) {

@@ -12,20 +12,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -43,27 +40,41 @@ public class BulletinServiceImpl implements BulletinService {
     validator.validateBulletinHeader(header);
     validator.validateBulletinText(text);
 
-    String path = "images/"+image.getOriginalFilename();
-    try {
-      Path copyLocation = Paths.get("target/classes/static/images" + File.separator + StringUtils.cleanPath(image.getOriginalFilename()));
-      Files.copy(image.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
-    } catch (Exception e) {
-      throw new BulletinsApplicationException(e.getMessage(),"login");
+    if (!bulletinRepository.findByTextAndHeader(text, header).isPresent()) {
+      validator.validateFileExtension(Objects.requireNonNull(image.getOriginalFilename()));
+      String path = "images/" + image.getOriginalFilename();
+      try {
+        Path copyLocation =
+            Paths.get(
+                "target/classes/static/images"
+                    + File.separator
+                    + StringUtils.cleanPath(image.getOriginalFilename()));
+        Files.copy(image.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
+      } catch (Exception e) {
+        throw new BulletinsApplicationException("cannot upload file", "account");
+      }
 
+      Date date = new Date();
+
+      Bulletin bulletin =
+          Bulletin.builder()
+              .header(header)
+              .text(text)
+              .author(author)
+              .date(date)
+              .pathToImage(path)
+              .build();
+
+      bulletinRepository.save(bulletin);
+
+      log.info(
+          String.format(
+              "uploaded new bulletin { header : %s , date : %s by user with email %s }",
+              header, date, author.getEmail()));
+    } else {
+      throw new BulletinsApplicationException(
+          "bulletin with such text and header already exists", "add_bulletin");
     }
-
-
-    Bulletin bulletin =
-        Bulletin.builder()
-            .header(header)
-            .text(text)
-            .author(author)
-            .date(new Date())
-                .pathToImage(path)
-            .build();
-
-
-    bulletinRepository.save(bulletin);
   }
 
   @Override
@@ -72,12 +83,20 @@ public class BulletinServiceImpl implements BulletinService {
     return dataParser
         .parseInt(page)
         .filter(this::isPageNumberValid)
-        .map(x -> bulletinRepository.findAll(PageRequest.of(x - 1, ITEMS_PER_PAGE)).getContent())
+        .map(
+            x ->
+                bulletinRepository
+                    .findAllByOrderByDateDesc(PageRequest.of(x - 1, ITEMS_PER_PAGE))
+                    .getContent())
         .orElseGet(
-            () -> bulletinRepository.findAll(PageRequest.of(0, ITEMS_PER_PAGE)).getContent());
+            () ->
+                bulletinRepository
+                    .findAllByOrderByDateDesc(PageRequest.of(0, ITEMS_PER_PAGE))
+                    .getContent());
   }
 
   public boolean isPageNumberValid(int page) {
+    if (page < 1) return false;
     long maxPage = pagesCount();
     return maxPage >= page;
   }

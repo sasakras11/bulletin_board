@@ -14,11 +14,7 @@
             background-color: #f2f2f2;
         }
 
-        .table {
-            background-color: #ffff;
-            box-shadow: 0px 2px 2px #aaa;
-            margin-top: 50px;
-        }
+
     </style>
 
     <a href="?lang=en" th:text="#{label.en}">English</a>|<a href="?lang=ua" th:text="#{label.ua}"></a>
@@ -34,11 +30,12 @@
 
                 <div class="col-6">
                     <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab"
-                       role="tab" aria-controls="nav-home" aria-selected="true">bulletins</a>
+                       role="tab" aria-controls="nav-home" aria-selected="true"
+                       th:text="#{label.bulletins}">bulletins</a>
                 </div>
                 <div class="col-6"><a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab"
                                       th:href="@{/account}" role="tab" aria-controls="nav-profile"
-                                      aria-selected="false">account</a>
+                                      aria-selected="false" th:text="#{label.account}"></a>
                 </div>
 
 
@@ -49,12 +46,13 @@
 
 
 <div
-     style="padding: 15px; min-height: 120px; margin-left: 15%;margin-right: 15%; margin-top: 20px">
+        style="padding: 15px; min-height: 120px; margin-left: 15%;margin-right: 15%; margin-top: 20px">
 
     <th:block th:each="bulletin : ${bulletins}">
 
 
-        <div class="row w-100 flex rounded" style="margin-left: 0;margin-bottom: 20px; background-color: #2CA5BA;padding: 1%">
+        <div class="row w-100 flex rounded"
+             style="margin-left: 0;margin-bottom: 20px; background-color: #CFEEFA;padding: 1%">
             <div class="col-2">
                 <img th:src="${bulletin.pathToImage}" class="img-thumbnail"/>
             </div>
@@ -64,7 +62,7 @@
                         <p style="font-size: 20px;font-weight: bold;" th:text="${bulletin.getHeader()}">...</p>
                     </div>
                     <div class="col-2">
-                        <p th:text="${bulletin.getDate()}">...</p>
+                        <p th:text="${#dates.format(bulletin.getDate(), 'dd-MM-yyyy HH:mm')}">...</p>
                     </div>
                 </div>
                 <div class="row w-100">
@@ -79,7 +77,7 @@
     <nav class="d-flex justify-content-center">
         <ul class="pagination">
             <th:block th:each="i: ${#numbers.sequence(1,pagesCount)}">
-                <li class="page-link"><a  th:href="@{/page(pageNum=${i})}" th:text="${i}"></a></li>
+                <li class="page-link"><a th:href="@{/page(pageNum=${i})}" th:text="${i}"></a></li>
             </th:block>
         </ul>
     </nav>

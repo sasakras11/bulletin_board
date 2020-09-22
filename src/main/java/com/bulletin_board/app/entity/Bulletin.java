@@ -33,7 +33,7 @@ public class Bulletin {
     private String text;
 
     @Column(name = "date",nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
 
