@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
     } else {
       throw new BulletinsApplicationException(
-          "user with this email already registered", "registration");
+          "user with this email already registered", "register");
     }
   }
 
